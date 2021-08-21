@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&display=swap" rel="stylesheet">
+    <link href="/static/styles.css" rel="stylesheet">
+    <title>Player Selection</title>
+</head>
+
+<body>
+    <div class="jumbotron">
+        <h1>Cricket Trials</h1>
+    </div>
+    <div class="container">
+        <div class="section_1">
+
+            <h2>Add a Player</h2>
+
+            {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                    <ul class=flashes>
+                    {% for message in messages %}
+                        <li>{{ message }}</li>
+                    {% endfor %}
+                    </ul>
+                {% endif %}
+            {% endwith %}
+
+
+            <form action="/" method="post">
+                <label for="fullname_label">Full Name</label> <br>
+                <input class="large_text" autocomplete="off" autofocus name="full_name" type="text"> <br> <br>
+
+                <label for="age_label">Age</label> <br>
+                <input class="small_text" autocomplete="off" name="age" type="text"> years old <br> <br>
+
+                <label for="height_label">Height</label> <br>
+                <input class="small_text" autocomplete="off" name="height" type="text"> inches tall <br> <br>
+
+                <label for="role_label">Role</label> <br>
+                <select name="role">
+                    <!-- <option class="selecting" disabled selected value="">Role</option> -->
+                    {% for role in roles %}
+                    <option value="{{ role }}">{{ role }}</option>
+                    {% endfor%}
+                </select> <br> <br>
+
+                <label for="rating_label">Rating</label> <br>
+                <input class="small_text" autocomplete="off" name="rating" type="text">/10 <br> <br>
+
+                <label for="comments_label">Coach's Comments</label> <br>
+                <textarea id="textarea" name="comments"></textarea> <br> <br>
+                <!--class="large_text" id="comments" autocomplete ="off" name="comments" type="text"> <br>-->
+
+                <label for="status_label">Selection Status</label> <br>
+                <select name="status">
+                    <!-- <option class="selecting" disabled selected value="">Status</option> -->
+                    {% for status in statuses %}
+                    <option value="{{ status }}">{{ status }}</option>
+                    {% endfor%}
+                </select> <br> <br>
+
+                <input type="submit" value="Add Player">
+            </form>
+
+        </div>
+
+        <div class="section_2">
+
+            <h2>Players' Portfolio</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Age</th>
+                        <th>Height</th>
+                        <th>Role</th>
+                        <th>Rating</th>
+                        <th>Coach's Comment</th>
+                        <th>Selection Status</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for id in players %}
+                    <tr>
+                        <td>{{ id.full_name }}</td>
+                        <td>{{ id.age }}</td>
+                        <td>{{ id.height }}</td>
+                        <td>{{ id.role }}</td>
+                        <td>{{ id.rating }}</td>
+                        <td>{{ id.comments }}</td>
+                        <td>{{ id.selected }}</td>
+                        <td>
+                            <form action="/delete" method="post" class=delete-entry>
+                                <input type="hidden" name="full_name" value="{{ id.full_name }}">
+                                <input type="submit" value="Delete" style="font-size: 15px;" />
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</body>
+
+</html>
